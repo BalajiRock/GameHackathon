@@ -1,5 +1,6 @@
 import pygame
 from pygame.sprite import AbstractGroup
+import time
 
 
 
@@ -162,6 +163,7 @@ class FireBallAttack(pygame.sprite.Sprite):
     super().__init__()
     self.sprites = []
     self.is_animating = False
+    self.is_waiting = 45
     # FireBallImage1 = pygame.image.load("./assets/images/FireBallAttack/final/1.png")
     FireBallImage0 = pygame.image.load("./assets/images/invisible.png")
     self.sprites.append(FireBallImage0)
@@ -188,18 +190,22 @@ class FireBallAttack(pygame.sprite.Sprite):
     
   def update(self):
     if self.is_animating == True:
-      self.currentSprit += 0.4
-      self.rect.x += 8
-        
-      if(int(self.currentSprit) == 0):
-        self.currentSprit = 1
-      if self.currentSprit >= len(self.sprites):
-        self.currentSprit = 1
-      if self.rect.x > 800:
-        self.is_animating = False
-        self.currentSprit = 0
-        self.rect.x = 100
-      self.image = self.sprites[int(self.currentSprit)]  
+      if self.is_waiting == 0:
+        self.currentSprit += 0.4
+        self.rect.x += 8
+
+        if(int(self.currentSprit) == 0):
+          self.currentSprit = 1
+        if self.currentSprit >= len(self.sprites):
+          self.currentSprit = 1
+        if self.rect.x > 800:
+          self.is_animating = False
+          self.currentSprit = 0
+          self.rect.x = 200
+          self.is_waiting = 45
+        self.image = self.sprites[int(self.currentSprit)]  
+      else:
+        self.is_waiting -= 1  
       
   def animate(self):
     self.is_animating = True 
@@ -277,12 +283,166 @@ class WindyStormAttack(pygame.sprite.Sprite):
     self.is_animating = True 
     print("called")   
   
+class OpponentFireBallAttack(pygame.sprite.Sprite):
+  def __init__(self, posX,posY) :
+    super().__init__()
+    self.sprites = []
+    self.is_animating = False
+    # OpponentFireBallImage1 = pygame.image.load("./assets/images/OpponentFireBallAttack/final/1.png")
+    OpponentFireBallImage0 = pygame.image.load("./assets/images/invisible.png")
+    self.sprites.append(OpponentFireBallImage0)
+    OpponentFireBallImage1 = pygame.transform.scale(pygame.image.load("./assets/images/Opponentfireball/fireball/0.png"), (250,125))
+    self.sprites.append(OpponentFireBallImage1)
+    OpponentFireBallImage2 = pygame.transform.scale(pygame.image.load("./assets/images/Opponentfireball/fireball/1.png"), (250,125))
+    self.sprites.append(OpponentFireBallImage2)
+    OpponentFireBallImage3 = pygame.transform.scale(pygame.image.load("./assets/images/Opponentfireball/fireball/2.png"), (250,125))
+    self.sprites.append(OpponentFireBallImage3)
+    OpponentFireBallImage4 = pygame.transform.scale(pygame.image.load("./assets/images/Opponentfireball/fireball/3.png"), (250,125))
+    self.sprites.append(OpponentFireBallImage4)
+    OpponentFireBallImage5 = pygame.transform.scale(pygame.image.load("./assets/images/Opponentfireball/fireball/4.png"), (250,125))
+    self.sprites.append(OpponentFireBallImage5)
+    OpponentFireBallImage6 = pygame.transform.scale(pygame.image.load("./assets/images/Opponentfireball/fireball/5.png"), (250,125))
+    self.sprites.append(OpponentFireBallImage6)
+    self.currentSprit = 0
+    self.image = self.sprites[self.currentSprit]
+    
+    self.rect = self.image.get_rect()
+    self.rect.topleft = [posX,posY]
+    print(self.rect,self.rect.topleft)
+    
+    
+    
+  def update(self):
+    if self.is_animating == True:
+      self.currentSprit += 0.4
+      self.rect.x -= 8
+        
+      if(int(self.currentSprit) == 0):
+        self.currentSprit = 1
+      if self.currentSprit >= len(self.sprites):
+        self.currentSprit = 1
+      if self.rect.x < 150:
+        self.is_animating = False
+        self.currentSprit = 0
+        self.rect.x = 800
+      self.image = self.sprites[int(self.currentSprit)]  
+      print(self.currentSprit)
+      
+  def animate(self):
+    self.is_animating = True       
   
   
   
+mainCharAnimating = False    
+
+class MainCharMove1Attack(pygame.sprite.Sprite):
+  def __init__(self, posX,posY) :
+    super().__init__()
+    self.sprites = []
+    self.is_animating = False
+    # MainCharMove1Image1 = pygame.image.load("./assets/images/MainCharMove1Attack/final/1.png")
+    MainCharMove2Image = pygame.image.load("./assets/images/invisible.png")
+    self.sprites.append(MainCharMove2Image)
+    MainCharMove1Image0 = pygame.transform.scale(pygame.image.load("./assets/images/enemy1/move1/0.png"), (250,400))
+    self.sprites.append(MainCharMove1Image0)
+    MainCharMove1Image1 = pygame.transform.scale(pygame.image.load("./assets/images/enemy1/move1/1.png"), (250,400))
+    self.sprites.append(MainCharMove1Image1)
+    MainCharMove1Image2 = pygame.transform.scale(pygame.image.load("./assets/images/enemy1/move1/2.png"), (250,400))
+    self.sprites.append(MainCharMove1Image2)
+    MainCharMove1Image3 = pygame.transform.scale(pygame.image.load("./assets/images/enemy1/move1/3.png"), (250,400))
+    self.sprites.append(MainCharMove1Image3)
+    MainCharMove1Image4 = pygame.transform.scale(pygame.image.load("./assets/images/enemy1/move1/4.png"), (400,400))
+    self.sprites.append(MainCharMove1Image4)
+    MainCharMove1Image5 = pygame.transform.scale(pygame.image.load("./assets/images/enemy1/move1/5.png"), (350,400))
+    self.sprites.append(MainCharMove1Image5)
+    MainCharMove1Image6 = pygame.transform.scale(pygame.image.load("./assets/images/enemy1/move1/6.png"), (350,400))
+    self.sprites.append(MainCharMove1Image6)
+    MainCharMove1Image7 = pygame.transform.scale(pygame.image.load("./assets/images/enemy1/move1/7.png"), (350,400))
+    self.sprites.append(MainCharMove1Image7)
+    self.currentSprit = 0
+    self.image = self.sprites[self.currentSprit]
+    
+    self.rect = self.image.get_rect()
+    self.rect.topleft = [posX,posY]
+    print(self.rect,self.rect.topleft)
+    
+    
+    
+  def update(self):
+    if self.is_animating == True:
+      self.currentSprit += 0.1
+
+      if self.currentSprit >= len(self.sprites):
+        self.currentSprit = 0
+        self.is_animating = False
+        
+      self.image = self.sprites[int(self.currentSprit)]  
+    else:
+      if mainCharAnimating == True:
+        self.image = self.sprites[0]
+      self.image = self.sprites[1]   
+      
+  def animate(self):
+    self.is_animating = True 
+    print("called") 
   
   
-  
+class MainCharMove2Attack(pygame.sprite.Sprite):
+  def __init__(self, posX,posY) :
+    super().__init__()
+    self.sprites1 = []
+    self.sprites2 = []
+    self.is_animating = False
+    # MainCharMove2Image1 = pygame.image.load("./assets/images/MainCharMove2Attack/final/1.png")
+    MainCharMove2Image = pygame.image.load("./assets/images/invisible.png")
+    self.sprites2.append(MainCharMove2Image)
+    MainCharMove2Image0 = pygame.transform.scale(pygame.image.load("./assets/images/enemy1/move2/0.png"), (250,400))
+    self.sprites2.append(MainCharMove2Image0)
+    MainCharMove2Image1 = pygame.transform.scale(pygame.image.load("./assets/images/enemy1/move2/1.png"), (250,400))
+    self.sprites2.append(MainCharMove2Image1)
+    MainCharMove2Image2 = pygame.transform.scale(pygame.image.load("./assets/images/enemy1/move2/2.png"), (250,400))
+    self.sprites2.append(MainCharMove2Image2)
+    MainCharMove2Image3 = pygame.transform.scale(pygame.image.load("./assets/images/enemy1/move2/3.png"), (250,400))
+    self.sprites2.append(MainCharMove2Image3)
+    MainCharMove2Image4 = pygame.transform.scale(pygame.image.load("./assets/images/enemy1/move2/4.png"), (400,400))
+    self.sprites2.append(MainCharMove2Image4)
+    MainCharMove2Image5 = pygame.transform.scale(pygame.image.load("./assets/images/enemy1/move2/5.png"), (350,400))
+    self.sprites2.append(MainCharMove2Image5)
+    MainCharMove2Image6 = pygame.transform.scale(pygame.image.load("./assets/images/enemy1/move2/6.png"), (350,400))
+    self.sprites2.append(MainCharMove2Image6)
+    MainCharMove2Image7 = pygame.transform.scale(pygame.image.load("./assets/images/enemy1/move2/7.png"), (350,400))
+    self.sprites.append(MainCharMove2Image7)
+    MainCharMove2Image8 = pygame.transform.scale(pygame.image.load("./assets/images/enemy1/move2/8.png"), (350,400))
+    self.sprites2.append(MainCharMove2Image8)
+    MainCharMove2Image9 = pygame.transform.scale(pygame.image.load("./assets/images/enemy1/move2/9.png"), (350,400))
+    self.sprites2.append(MainCharMove2Image9)
+    self.currentSprit = 0
+    self.image = self.sprites[self.currentSprit]
+    
+    self.rect = self.image.get_rect()
+    self.rect.topleft = [posX,posY]
+    print(self.rect,self.rect.topleft)
+    
+    
+    
+  def update(self):
+    if self.is_animating == True:
+      self.currentSprit += 0.1
+
+      if self.currentSprit >= len(self.sprites):
+        self.currentSprit = 0
+        self.is_animating = False
+        
+      self.image = self.sprites[int(self.currentSprit)]  
+      mainCharAnimating = False
+    # else:
+    #   self.image = self.sprites[1]  
+        
+      
+  def animate(self):
+    mainCharAnimating = True
+    self.is_animating = True 
+    print("called")   
   
   
   
@@ -309,6 +469,8 @@ class WindyStormAttack(pygame.sprite.Sprite):
 
 def fireBall():
   print("fireball")
+def opponentfireBall():
+  print("opponentfireball")
   
 def waterVortex():
   print("waterVortex")
@@ -318,6 +480,12 @@ def stoneBullet():
   print("stonebullet")
 def windyStorm():
   print("windyStorm")
+  
+def mainCharMove1():
+  print("mainCharMove1")
+  
+def mainCharMove2():
+  print("mainCharMove2")
 
 
 
@@ -329,9 +497,21 @@ fireBall_sprites = pygame.sprite.Group()
 fireBallattack = FireBallAttack(200,200)
 fireBall_sprites.add(fireBallattack) 
 
+opponentFireBall_sprites = pygame.sprite.Group()
+opponentFireBallattack = OpponentFireBallAttack(800,200)
+opponentFireBall_sprites.add(opponentFireBallattack) 
+
 windyStorm_sprites = pygame.sprite.Group()
 windystormattack = WindyStormAttack(200,250)
 windyStorm_sprites.add(windystormattack) 
+
+mainCharMove1_sprites = pygame.sprite.Group()
+mainCharMove1attack = MainCharMove1Attack(150,100)
+mainCharMove1_sprites.add(mainCharMove1attack) 
+
+mainCharMove2_sprites = pygame.sprite.Group()
+mainCharMove2attack = MainCharMove2Attack(150,100)
+mainCharMove2_sprites.add(mainCharMove2attack) 
 
 
 
@@ -342,6 +522,8 @@ windyStorm_sprites.add(windystormattack)
 
 game_state = "menu"
 game_level = 0
+player_turn = True
+
 
 #game loop
 run = True
@@ -416,11 +598,20 @@ while run:
     fireBall_sprites.draw(screen)
     fireBall_sprites.update()
     
+    opponentFireBall_sprites.draw(screen)
+    opponentFireBall_sprites.update()
+    
     windyStorm_sprites.draw(screen)
     windyStorm_sprites.update()
     
+    mainCharMove1_sprites.draw(screen)
+    mainCharMove1_sprites.update()
+    
+    mainCharMove2_sprites.draw(screen)
+    mainCharMove2_sprites.update()
+    
     pygame.display.flip()
-    clock.tick(60)
+    clock.tick(80)
 
 
   #event handler
@@ -432,11 +623,16 @@ while run:
         run = False
       elif event.type == pygame.MOUSEBUTTONDOWN:
         x,y=pygame.mouse.get_pos()
-        if y > 530:
+        if y > 530 and player_turn:
           if x < 250:
+            mainCharMove1()
+            mainCharMove1attack.animate()
             fireBall()
             fireBallattack.animate()
+            player_turn = False
           elif (x > 300 and x < 550):  
+            mainCharMove2()
+            mainCharMove2attack.animate()
             waterVortex()
             waterVortexattack.animate()
             
@@ -445,7 +641,10 @@ while run:
           elif (x > 900):
             windyStorm() 
             windystormattack.animate()
-        else:
+        elif not player_turn:
+          opponentfireBall()
+          opponentFireBallattack.animate()
+          player_turn = True
           pass
   elif game_state == "level":
 
