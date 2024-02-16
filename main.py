@@ -1,5 +1,7 @@
 import pygame
-import button
+from pygame.sprite import AbstractGroup
+
+
 
 pygame.init()
 
@@ -18,6 +20,8 @@ font = pygame.font.SysFont("arialblack", 40)
 
 #define colours
 TEXT_COL = (255, 255, 255)
+
+clock = pygame.time.Clock()
 
 #load button images
 play_img = pygame.image.load("./assets/images/button_play.png")
@@ -48,6 +52,8 @@ back_img = pygame.image.load('./assets/images/button_back.png').convert_alpha()
 def draw_text(text, font, text_col, x, y):
   img = font.render(text, True, text_col)
   screen.blit(img, (x, y))
+  
+  
 shopBackgroundImage = pygame.image.load("./assets/images/shop_background.png")
 shopBackgroundImage = pygame.transform.scale(shopBackgroundImage, (1150,600))
 
@@ -58,7 +64,7 @@ battleFieldBackgroundImage = pygame.image.load("./assets/images/BattleField_back
 battleFieldBackgroundImage = pygame.transform.scale(battleFieldBackgroundImage, (1150,530))
 
 levelBackgroundImage = pygame.image.load("./assets/images/level_background.png")
-levelBackgroundImage = pygame.transform.scale(levelBackgroundImage, (1150,530))
+levelBackgroundImage = pygame.transform.scale(levelBackgroundImage, (1150,600))
 
 
 levelEasyButtonImage = pygame.image.load("./assets/images/easyLevel.png")
@@ -89,16 +95,243 @@ windyStormAttackButtonImage = pygame.transform.scale(windyStormAttackButtonImage
 
 
 
+class WaterVortexAttack(pygame.sprite.Sprite):
+  def __init__(self, posX,posY) :
+    super().__init__()
+    self.sprites = []
+    self.is_animating = False
+    # WaterVortexImage1 = pygame.image.load("./assets/images/waterVortexAttack/final/1.png")
+    WaterVortexImage0 = pygame.image.load("./assets/images/invisible.png")
+    self.sprites.append(WaterVortexImage0)
+    WaterVortexImage1 = pygame.transform.scale(pygame.image.load("./assets/images/waterVortex/1-removebg-preview.png"), (160,350))
+    self.sprites.append(WaterVortexImage1)
+    WaterVortexImage2 = pygame.transform.scale(pygame.image.load("./assets/images/waterVortex/2-removebg-preview.png"), (160,350))
+    self.sprites.append(WaterVortexImage2)
+    WaterVortexImage3 = pygame.transform.scale(pygame.image.load("./assets/images/waterVortex/3-removebg-preview.png"), (160,350))
+    self.sprites.append(WaterVortexImage3)
+    WaterVortexImage4 = pygame.transform.scale(pygame.image.load("./assets/images/waterVortex/4-removebg-preview.png"), (160,350))
+    self.sprites.append(WaterVortexImage4)
+    WaterVortexImage5 = pygame.transform.scale(pygame.image.load("./assets/images/waterVortex/5-removebg-preview.png"), (160,350))
+    self.sprites.append(WaterVortexImage5)
+    WaterVortexImage6 = pygame.transform.scale(pygame.image.load("./assets/images/waterVortex/6-removebg-preview.png"), (160,350))
+    self.sprites.append(WaterVortexImage6)
+    WaterVortexImage7 = pygame.transform.scale(pygame.image.load("./assets/images/waterVortex/7-removebg-preview.png"), (160,350))
+    self.sprites.append(WaterVortexImage7)
+
+    self.currentSprit = 0
+    self.image = self.sprites[self.currentSprit]
+    
+    self.rect = self.image.get_rect()
+    self.rect.topleft = [posX,posY]
+    print(self.rect,self.rect.topleft)
+    
+    
+    
+  def update(self):
+    if self.is_animating == True:
+      self.currentSprit += 0.4
+      self.rect.x += 8
+        
+      if(int(self.currentSprit) == 0):
+        self.currentSprit = 1
+      print(self.rect.x)
+      if self.currentSprit >= len(self.sprites):
+        self.currentSprit = 1
+      if self.rect.x > 800:
+        self.is_animating = False
+        self.currentSprit = 0
+        self.rect.x = 100
+      self.image = self.sprites[int(self.currentSprit)]  
+      print(self.currentSprit)
+      
+  def animate(self):
+    self.is_animating = True 
+    print("called") 
+    # self.update()
+  
+  
+  
+  
+  
+  
+  
+  
+  
+class FireBallAttack(pygame.sprite.Sprite):
+  def __init__(self, posX,posY) :
+    super().__init__()
+    self.sprites = []
+    self.is_animating = False
+    # FireBallImage1 = pygame.image.load("./assets/images/FireBallAttack/final/1.png")
+    FireBallImage0 = pygame.image.load("./assets/images/invisible.png")
+    self.sprites.append(FireBallImage0)
+    FireBallImage1 = pygame.transform.scale(pygame.image.load("./assets/images/fireball/fireball/1.png"), (250,125))
+    self.sprites.append(FireBallImage1)
+    FireBallImage2 = pygame.transform.scale(pygame.image.load("./assets/images/fireball/fireball/2.png"), (250,125))
+    self.sprites.append(FireBallImage2)
+    FireBallImage3 = pygame.transform.scale(pygame.image.load("./assets/images/fireball/fireball/3.png"), (250,125))
+    self.sprites.append(FireBallImage3)
+    FireBallImage4 = pygame.transform.scale(pygame.image.load("./assets/images/fireball/fireball/4.png"), (250,125))
+    self.sprites.append(FireBallImage4)
+    FireBallImage5 = pygame.transform.scale(pygame.image.load("./assets/images/fireball/fireball/5.png"), (250,125))
+    self.sprites.append(FireBallImage5)
+    FireBallImage6 = pygame.transform.scale(pygame.image.load("./assets/images/fireball/fireball/6.png"), (250,125))
+    self.sprites.append(FireBallImage6)
+    self.currentSprit = 0
+    self.image = self.sprites[self.currentSprit]
+    
+    self.rect = self.image.get_rect()
+    self.rect.topleft = [posX,posY]
+    print(self.rect,self.rect.topleft)
+    
+    
+    
+  def update(self):
+    if self.is_animating == True:
+      self.currentSprit += 0.4
+      self.rect.x += 8
+        
+      if(int(self.currentSprit) == 0):
+        self.currentSprit = 1
+      if self.currentSprit >= len(self.sprites):
+        self.currentSprit = 1
+      if self.rect.x > 800:
+        self.is_animating = False
+        self.currentSprit = 0
+        self.rect.x = 100
+      self.image = self.sprites[int(self.currentSprit)]  
+      
+  def animate(self):
+    self.is_animating = True 
+    print("called") 
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+class WindyStormAttack(pygame.sprite.Sprite):
+  def __init__(self, posX,posY) :
+    super().__init__()
+    self.sprites = []
+    self.is_animating = False
+    # WindyStormImage1 = pygame.image.load("./assets/images/WindyStormAttack/final/1.png")
+    WindyStormImage0 = pygame.image.load("./assets/images/invisible.png")
+    self.sprites.append(WindyStormImage0)
+    WindyStormImage1 = pygame.transform.scale(pygame.image.load("./assets/images/windystorm/windy storm/1.png"),(450,250))
+    self.sprites.append(WindyStormImage1)
+    WindyStormImage2 = pygame.transform.scale(pygame.image.load("./assets/images/windystorm/windy storm/2.png"),(450,250))
+    self.sprites.append(WindyStormImage2)
+    WindyStormImage3 = pygame.transform.scale(pygame.image.load("./assets/images/windystorm/windy storm/3.png"),(450,250))
+    self.sprites.append(WindyStormImage3)
+    WindyStormImage4 = pygame.transform.scale(pygame.image.load("./assets/images/windystorm/windy storm/4.png"),(450,250))
+    self.sprites.append(WindyStormImage4)
+    WindyStormImage5 = pygame.transform.scale(pygame.image.load("./assets/images/windystorm/windy storm/5.png"),(450,250))
+    self.sprites.append(WindyStormImage5)
+    WindyStormImage6 = pygame.transform.scale(pygame.image.load("./assets/images/windystorm/windy storm/6.png"),(450,250))
+    self.sprites.append(WindyStormImage6)
+    WindyStormImage7 = pygame.transform.scale(pygame.image.load("./assets/images/windystorm/windy storm/7.png"),(450,250))
+    self.sprites.append(WindyStormImage7)
+    WindyStormImage8 = pygame.transform.scale(pygame.image.load("./assets/images/windystorm/windy storm/8.png"),(450,250))
+    self.sprites.append(WindyStormImage8)
+    WindyStormImage9 = pygame.transform.scale(pygame.image.load("./assets/images/windystorm/windy storm/9.png"),(450,250))
+    self.sprites.append(WindyStormImage9)
+    WindyStormImage10 = pygame.transform.scale(pygame.image.load("./assets/images/windystorm/windy storm/10.png"),(450,250))
+    self.sprites.append(WindyStormImage10)
+    WindyStormImage11 = pygame.transform.scale(pygame.image.load("./assets/images/windystorm/windy storm/11.png"),(450,250))
+    self.sprites.append(WindyStormImage11)
+    WindyStormImage12 = pygame.transform.scale(pygame.image.load("./assets/images/windystorm/windy storm/12.png"),(450,250))
+    self.sprites.append(WindyStormImage12)
+    self.currentSprit = 0
+    self.image = self.sprites[self.currentSprit]
+
+    
+    self.rect = self.image.get_rect()
+    self.rect.topleft = [posX,posY]
+    print(self.rect,self.rect.topleft)
+    
+    
+    
+  def update(self):
+    if self.is_animating == True:
+      self.currentSprit += 0.4
+      self.rect.x += 8
+        
+      if(int(self.currentSprit) == 0):
+        self.currentSprit = 1
+      if self.currentSprit >= len(self.sprites):
+        self.currentSprit = 1
+      if self.rect.x > 800:
+        self.is_animating = False
+        self.currentSprit = 0
+        self.rect.x = 100
+      self.image = self.sprites[int(self.currentSprit)]  
+      
+  def animate(self):
+    self.is_animating = True 
+    print("called")   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+      
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def fireBall():
   print("fireball")
+  
 def waterVortex():
   print("waterVortex")
+  
+    
 def stoneBullet():
   print("stonebullet")
 def windyStorm():
   print("windyStorm")
+
+
+
+WaterVertex_sprites = pygame.sprite.Group()
+waterVortexattack = WaterVortexAttack(200,100)
+WaterVertex_sprites.add(waterVortexattack) 
+
+fireBall_sprites = pygame.sprite.Group()
+fireBallattack = FireBallAttack(200,200)
+fireBall_sprites.add(fireBallattack) 
+
+windyStorm_sprites = pygame.sprite.Group()
+windystormattack = WindyStormAttack(200,250)
+windyStorm_sprites.add(windystormattack) 
 
 
 
@@ -112,6 +345,7 @@ game_level = 0
 
 #game loop
 run = True
+
 while run:
   
 
@@ -121,6 +355,7 @@ while run:
 
   # Using blit to copy content from one surface to other
   # screen.blit(image, DEFAULT_IMAGE_POSITION)
+  screenReady = True
 
   if game_state == "menu":
     screen.blit(menuBackgroundImage, (0, 0))
@@ -128,7 +363,6 @@ while run:
     screen.blit(level_img, (300, 200))
     screen.blit(shop_img, (300, 300))
     screen.blit(quit_img, (300, 400))
-    
     
     # check menu state
     # if menu_state == "main":
@@ -157,7 +391,6 @@ while run:
         run = False
       elif event.type == pygame.MOUSEBUTTONDOWN:
         x,y=pygame.mouse.get_pos()  
-        print(x,y)
         if (x>300 and x<550):
           
           if( y>100 and y<160):
@@ -171,13 +404,23 @@ while run:
     screenReady = False    
   elif game_state == "game":
 
+    
     screen.blit(battleFieldBackgroundImage, (0, 0))
     screen.blit(fireBallAttackButtonImage, (0, 530))
     screen.blit(WaterVortexAttackButtonImage, (300, 530))
     screen.blit(stoneBulletsAttackButtonImage, (600, 530))
     screen.blit(windyStormAttackButtonImage, (900,530))
-    screenReady = True
+    WaterVertex_sprites.draw(screen)
+    WaterVertex_sprites.update()
     
+    fireBall_sprites.draw(screen)
+    fireBall_sprites.update()
+    
+    windyStorm_sprites.draw(screen)
+    windyStorm_sprites.update()
+    
+    pygame.display.flip()
+    clock.tick(60)
 
 
   #event handler
@@ -192,20 +435,24 @@ while run:
         if y > 530:
           if x < 250:
             fireBall()
+            fireBallattack.animate()
           elif (x > 300 and x < 550):  
             waterVortex()
+            waterVortexattack.animate()
+            
           elif (x > 600 and x < 850):
             stoneBullet()
           elif (x > 900):
             windyStorm() 
+            windystormattack.animate()
         else:
           pass
   elif game_state == "level":
+
     screen.blit(levelBackgroundImage, (0, 0))
     screen.blit(levelEasyButtonImage, (160, 100))
     screen.blit(levelMedButtonImage, (160, 200))
     screen.blit(levelHardButtonImage, (160, 300))
-    
     
     
     for event in pygame.event.get():
@@ -216,7 +463,6 @@ while run:
         run = False
       elif event.type == pygame.MOUSEBUTTONDOWN:
         x,y=pygame.mouse.get_pos()
-        print(x,y)
         if (x > 160 and x < 400):
           if(y > 100 and y < 160):
             game_level = 0
@@ -224,7 +470,6 @@ while run:
             game_level = 1
           elif (y > 300 and y < 360):
             game_level = 2    
-    print(game_level)    
   elif game_state == "shop":
     screen.blit(shopBackgroundImage, (0, 0)) 
     for event in pygame.event.get():
