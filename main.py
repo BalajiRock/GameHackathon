@@ -1042,9 +1042,6 @@ opponentstonebullets_sprites = pygame.sprite.Group()
 opponentstonebulletsattack = OpponentStoneBulletAttack(800,200)
 opponentstonebullets_sprites.add(opponentstonebulletsattack) 
 
-# mainCharMove1_sprites = pygame.sprite.Group()
-# mainCharMove1attack = MainCharMove1Attack(150,100)
-# mainCharMove1_sprites.add(mainCharMove1attack) 
 
 mainCharMove2_sprites = pygame.sprite.Group()
 mainCharMove2attack = MainCharMove2Attack(150,100)
@@ -1069,14 +1066,6 @@ class Bar ():
     ratio = self.hp / self.maxi
     pygame.draw.rect(surface,self.color1,(self.x,self.y,500,15))
     pygame.draw.rect(surface,self.color2,(self.x,self.y,500*ratio,15))
-    
-
-
-
-# FireBallButton = button.Button(0, 530, fireBallAttackButtonImage, 1)
-# WaterVortexButton = button.Button(0, 530, WaterVortexAttackButtonImage, 1)
-# StoneBulletsButton = button.Button(0, 530, stoneBulletsAttackButtonImage, 1)
-# WindyStormButton = button.Button(0, 530, windyStormAttackButtonImage, 1)
 
 game_state = "menu"
 game_level = 0
@@ -1090,12 +1079,9 @@ playerAttackBar = Bar(15,25,100,(100,100,100),(0,213,255))
 Enemy1HealthBar = Bar(630,5,100,(0,150,0),(0,255,0))
 Enemy1AttackBar = Bar(630,25,100,(100,100,100),(0,213,255))
 
-
-
-#game loop
-backgroundaudio = pygame.mixer.Sound('./assets/audiofiles/Drum_Machine.wav')
-pygame.mixer.Channel(0).play(backgroundaudio,-1)
-# pygame.mixer.Channel(0).unpause()
+backgroundaudio = pygame.mixer.Sound('./assets/audiofiles/game home.wav')
+backgroundaudio.set_volume(0.4)
+mymusic = pygame.mixer.Channel(0).play(backgroundaudio,-1)
 run = True
 
 
@@ -1104,44 +1090,14 @@ Title = pygame.transform.scale(pygame.image.load("./assets/audiofiles/Battle Fan
 
 while run:
 
-  #check if game is paused
-  # menu_state = "options"
-  # create a surface object, image is drawn on it.
-
-  # Using blit to copy content from one surface to other
-  # screen.blit(image, DEFAULT_IMAGE_POSITION)
   screenReady = True
 
   if game_state == "menu":
     screen.blit(menuBackgroundImage, (0, 0))
-    # draw_text("Battle Fantasy",font, TEXT_COL, 575, 5)
     screen.blit(Title,(600,0))
     screen.blit(play_img, (200, 100))
-    # screen.blit(level_img, (300, 200))
     screen.blit(shop_img, (200, 250))
     screen.blit(quit_img, (200, 400))
-    
-    # check menu state
-    # if menu_state == "main":
-    #   #draw pause screen buttons
-    #   if play_button.draw(screen):
-    #     game_paused = False
-    #   elif shop_button.draw(screen):
-    #     menu_state = "options"
-    #   elif quit_button.draw(screen):
-    #     run = False
-    # #check if the options menu is open
-    # elif menu_state == "options":
-    #   #draw the different options buttons
-    #   screen.blit(shopBackgroundImage, (0, 0))
-    #   if video_button.draw(screen):
-    #     print("Video Settings")
-    #   elif audio_button.draw(screen):
-    #     print("Audio Settings")
-    #   elif keys_button.draw(screen):
-    #     print("Change Key Bindings")
-    #   elif back_button.draw(screen):
-    #     menu_state = "main"
     
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
@@ -1152,8 +1108,6 @@ while run:
           
           if( y>100 and y<160):
             game_state = "game"
-          # elif( y>200 and y<260):
-            # game_state = "level"
           elif( y>250 and y<410):
             game_state = "shop"
           elif( y>300 and y<460):
@@ -1200,9 +1154,6 @@ while run:
     opponentstonebullets_sprites.draw(screen)
     opponentstonebullets_sprites.update()
     
-    # mainCharMove1_sprites.draw(screen)
-    # mainCharMove1_sprites.update()
-    
     mainCharMove2_sprites.draw(screen)
     mainCharMove2_sprites.update()
     
@@ -1223,8 +1174,9 @@ while run:
           run = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
           x,y=pygame.mouse.get_pos()
-          if y > 530 and player_turn:
-            if x < 250:
+          if player_turn:
+            
+            if x < 250 and y>530:
                
               mainCharMove2attack.animate(0)
               fireBallattack.animate()
@@ -1237,7 +1189,6 @@ while run:
               player_turn = False
               mainCharMove2attack.animate(1)
               waterVortexattack.animate()
-              
                
               Enemy1HealthBar.hp -= random.randint(15,25) 
               playerHealthBar.hp -= playerAttackBar.hp*0.01*random.randint(1,10)
@@ -1263,7 +1214,12 @@ while run:
               Enemy1HealthBar.hp -= random.randint(15,25) 
               playerHealthBar.hp -= playerAttackBar.hp*0.01*random.randint(1,10)
               playerAttackBar.hp -= 15
+            else :
+              player_turn = True 
+               
             playerAttackBar.hp += random.randint(5,15)
+            if playerAttackBar.hp > playerAttackBar.maxi:
+              playerAttackBar.hp = playerAttackBar.maxi
           elif not player_turn:
             index = random.choice([0,1,2,3])
             if index == 0:
@@ -1295,15 +1251,12 @@ while run:
               Enemy1HealthBar.hp -= Enemy1HealthBar.hp*0.01*random.randint(1,10)
               Enemy1AttackBar.hp -= 15
             Enemy1AttackBar.hp += random.randint(5,15)
-            
-            # opponentwaterVortexattack.animate()
-            # opponentfireBall()
-            # opponentFireBallattack.animate()
+            if Enemy1AttackBar.hp > Enemy1AttackBar.maxi:
+              Enemy1AttackBar.hp = Enemy1AttackBar.maxi
             player_turn = True
     elif (playerHealthBar.hp < 0):
         
         draw_text("You Died",gameFont,TEXT_COL,300,200)
-        # screen.blit(youDied_img,(0, 0))
         if magical_energyadd == False:
           magical_energy += random.randint(20,35)
           magical_energyadd = True
@@ -1319,7 +1272,6 @@ while run:
               
         
     elif (Enemy1HealthBar.hp < 0):
-        # screen.blit(Victory_img, (0, 0))
         if magical_energyadd == False:
           magical_energy += random.randint(100,130)
           magical_energyadd = True
@@ -1375,10 +1327,6 @@ while run:
     
     draw_text("Player HP : "+str(playerHealthBar.maxi), font, TEXT_COL, 0,0)
     draw_text("Player Attack : "+str(playerAttackBar.maxi), font, TEXT_COL, 0,30)
-    
-    
-    
-    
     
     for event in pygame.event.get():
       if event.type == pygame.KEYDOWN:
